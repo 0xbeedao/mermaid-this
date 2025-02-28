@@ -1,0 +1,16 @@
+---
+description: Deciding the tools and libraries to use for implementation
+globs: 
+alwaysApply: false
+---
+
+# Tools and libraries:
+
+- use "bun" for all "npm" related activities
+- use "commander" for the command line integration
+- use "mastra" to make the agent that will perform the mermaid summarization
+- make a step in a mastra workflow to output the summarization in a markdown fenced format, e.g.:
+```mermaid
+$diagram
+```
+- refer to @mastra.md for documentation on that library.
