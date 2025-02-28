@@ -4,6 +4,7 @@
     "": {
       "name": "mermaid-this",
       "dependencies": {
+        "@ai-sdk/openai": "^1.1.15",
         "@mastra/core": "^0.4.2",
         "commander": "^13.1.0",
         "zod": "^3.24.2",
@@ -17,6 +18,8 @@
     },
   },
   "packages": {
+    "@ai-sdk/openai": ["@ai-sdk/openai@1.1.15", "", { "dependencies": { "@ai-sdk/provider": "1.0.9", "@ai-sdk/provider-utils": "2.1.10" }, "peerDependencies": { "zod": "^3.0.0" } }, "sha512-irGQx5lMrYI9gub7Sy2ZHu49D3Icf7OtfOu3X8fVKMONOyi54RTKRNjVZTewkfRNE44psTbZDO8j8qmPirOTNQ=="],
+
     "@ai-sdk/provider": ["@ai-sdk/provider@1.0.9", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-jie6ZJT2ZR0uVOVCDc9R2xCX5I/Dum/wEK28lx21PJx6ZnFAN9EzD2WsPhcDWfCgGx3OAZZ0GyM3CEobXpa9LA=="],
 
     "@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@2.1.10", "", { "dependencies": { "@ai-sdk/provider": "1.0.9", "eventsource-parser": "^3.0.0", "nanoid": "^3.3.8", "secure-json-parse": "^2.7.0" }, "peerDependencies": { "zod": "^3.0.0" }, "optionalPeers": ["zod"] }, "sha512-4GZ8GHjOFxePFzkl3q42AU0DQOtTQ5w09vmaWUf/pKFXJPizlnzKSUkF0f+VkapIUfDugyMqPMT1ge8XQzVI7Q=="],

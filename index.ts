@@ -1,38 +1,63 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
-import { generateMermaidDiagram } from './src/generator.ts';
-import fs from 'fs';
 import path from 'path';
-
+import { codeDiagramAgent, mermaidOutputSchema } from './src/diagram-agent.ts';
+import { makeCodePrompt } from './src/prompts.ts';
 const program = new Command();
 
 program
   .name('mermaid-this')
   .description('CLI tool to generate mermaid diagrams for code files')
-  .version('0.1.0')
+  .version('0.1.1')
   .argument('<file>', 'The file to generate a mermaid diagram for')
   .option('-o, --output <file>', 'Output file (defaults to stdout)')
   .option('-t, --type <type>', 'Type of diagram to generate (defaults to "sequence")')
   .action(async (file, options) => {
     try {
       // Check if file exists
-      if (!fs.existsSync(file)) {
+      const inFile = Bun.file(file);
+      if (!inFile.exists()) {
         console.error(`Error: File '${file}' does not exist`);
         process.exit(1);
       }
 
       // Read the file content
-      const content = fs.readFileSync(file, 'utf-8');
+      const content = await inFile.text();
       const fileExtension = path.extname(file).slice(1);
 
+      const diagramType = options.type || 'sequence';
+      const prompt = makeCodePrompt(content, fileExtension, diagramType);
+
       // Generate the mermaid diagram
-      const diagram = await generateMermaidDiagram(content, fileExtension, options.type || 'sequence');
+      const result = await codeDiagramAgent.generate(
+        [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        {
+          output: mermaidOutputSchema
+        }
+      );
+
+
+      const { mermaid, description } = result.object;
 
       // Output the diagram
-      const output = `\`\`\`mermaid\n${diagram}\n\`\`\``;
-      
+      const delimiter = "```";
+      const output = [`# ${file} ${diagramType} Diagram`,
+        ``,
+        `${description}`,
+        ``,
+        `${delimiter}mermaid`,
+        `${mermaid}`,
+        `${delimiter}`,
+      ].join("\n");
+
       if (options.output) {
-        fs.writeFileSync(options.output, output);
+        const outFile = Bun.file(options.output);
+        await Bun.write(outFile, output);
         console.log(`Diagram written to ${options.output}`);
       } else {
         console.log(output);

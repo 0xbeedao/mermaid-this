@@ -1,0 +1,18 @@
+{
+  "version": "4",
+  "redirects": {
+    "https://deno.land/std": "https://deno.land/std@0.224.0",
+    "https://deno.land/std/": "https://deno.land/std"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@ai-sdk/openai@^1.1.15",
+        "npm:@mastra/core@~0.4.2",
+        "npm:@types/bun@latest",
+        "npm:commander@^13.1.0",
+        "npm:zod@^3.24.2"
+      ]
+    }
+  }
+}
