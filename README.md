@@ -2,11 +2,13 @@
 
 A CLI tool to generate mermaid diagrams for code files.
 
+Bruce Kroeze <0xbigbee@pm.me>
+
 ## Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mermaid-this.git
+git clone https://github.com/0xbeedao/mermaid-this.git
 cd mermaid-this
 
 # Install dependencies
