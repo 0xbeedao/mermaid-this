@@ -1,8 +1,10 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import path from 'path';
-import { codeDiagramAgent, mermaidOutputSchema } from './src/diagram-agent.ts';
+import { diagramMaker } from './src/diagram-agent.ts';
 import { makeCodePrompt } from './src/prompts.ts';
+import { formatOutput } from './src/formatters.ts';
+import { determineModel } from './src/model-parser.ts';
 const program = new Command();
 
 program
@@ -12,6 +14,7 @@ program
   .argument('<file>', 'The file to generate a mermaid diagram for')
   .option('-o, --output <file>', 'Output file (defaults to stdout)')
   .option('-t, --type <type>', 'Type of diagram to generate (defaults to "sequence")')
+  .option('-m, --model <model>', 'Model to use (defaults to "ollama:llama3.1:8b"). Use "openai:<model>" for OpenAI API, use "http://host:port/path" for local OpenAI-compatible API')
   .action(async (file, options) => {
     try {
       // Check if file exists
@@ -26,34 +29,14 @@ program
       const fileExtension = path.extname(file).slice(1);
 
       const diagramType = options.type || 'sequence';
+      const model = determineModel(options.model || 'ollama:llama3.1:8b');
       const prompt = makeCodePrompt(content, fileExtension, diagramType);
-
       // Generate the mermaid diagram
-      const result = await codeDiagramAgent.generate(
-        [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        {
-          output: mermaidOutputSchema
-        }
-      );
+      const result = await diagramMaker(model, prompt);
 
+      const { mermaid, description } = result;
 
-      const { mermaid, description } = result.object;
-
-      // Output the diagram
-      const delimiter = "```";
-      const output = [`# ${file} ${diagramType} Diagram`,
-        ``,
-        `${description}`,
-        ``,
-        `${delimiter}mermaid`,
-        `${mermaid}`,
-        `${delimiter}`,
-      ].join("\n");
+      const output = formatOutput(file, diagramType, description, mermaid);
 
       if (options.output) {
         const outFile = Bun.file(options.output);

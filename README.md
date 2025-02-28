@@ -20,13 +20,19 @@ bun install
 bun link
 ```
 
-Make sure you export an OPENAPI_API_KEY from your .bashrc, which will automatically
-be used by the app.
+## Environment Variables
+
+The tool supports different LLM providers through environment variables:
+
+- For OpenAI API:
+  ```bash
+  export OPENAI_API_KEY=your_api_key_here
+  ```
 
 ## Usage
 
 ```bash
-# Generate a mermaid diagram for a file
+# Generate a mermaid diagram for a file using the default Ollama model
 mermaid-this path/to/file.js > diagram.md
 
 # Specify the output file
@@ -34,7 +40,20 @@ mermaid-this path/to/file.js -o diagram.md
 
 # Specify the diagram type
 mermaid-this path/to/file.js -t class
+
+# Use a specific model
+mermaid-this path/to/file.js -m ollama:llama3.1:8b
+mermaid-this path/to/file.js -m openai:gpt-4
+mermaid-this path/to/file.js -m http://some/inference/endpoint:mistral-7b
 ```
+
+## Supported Models
+
+The tool supports different LLM providers:
+
+- `ollama:model_name` - Uses Ollama with the specified model (default)
+- `openai:model_name` - Uses OpenAI API with the specified model (requires OPENAI_API_KEY)
+- `http(s)://localprovider:model_name` - Uses a local OpenAI-compatible API endpoint
 
 ## Supported Diagram Types
 

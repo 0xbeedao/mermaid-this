@@ -18,9 +18,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^1.1.15",
-    "@mastra/core": "^0.4.2",
     "commander": "^13.1.0",
+    "ollama": "^0.5.14",
     "zod": "^3.24.2"
   }
 }
