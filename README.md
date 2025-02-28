@@ -2,7 +2,9 @@
 
 A CLI tool to generate mermaid diagrams for code files.
 
-Bruce Kroeze <0xbigbee@pm.me>
+Bruce Kroeze <0xbigbee@pm.me> Copyright 2025
+
+License: MIT
 
 ## Installation
 
