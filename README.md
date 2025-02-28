@@ -20,6 +20,9 @@ bun install
 bun link
 ```
 
+Make sure you export an OPENAPI_API_KEY from your .bashrc, which will automatically
+be used by the app.
+
 ## Usage
 
 ```bash
