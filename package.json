@@ -3,6 +3,14 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "bin": {
+    "mermaid-this": "./index.ts"
+  },
+  "scripts": {
+    "start": "bun index.ts",
+    "build": "bun build index.ts --outdir ./dist --target node",
+    "test": "bun test"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -11,6 +19,7 @@
   },
   "dependencies": {
     "@mastra/core": "^0.4.2",
+    "commander": "^13.1.0",
     "zod": "^3.24.2"
   }
 }
