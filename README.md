@@ -41,6 +41,9 @@ mermaid-this path/to/file.js -o diagram.md
 # Specify the diagram type
 mermaid-this path/to/file.js -t class
 
+# Specify Class and Sequence diagrams
+mermaid-this path/to/file.js -t class,sequence
+
 # Use a specific model
 mermaid-this path/to/file.js -m ollama:llama3.1:8b
 mermaid-this path/to/file.js -m openai:gpt-4

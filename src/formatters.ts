@@ -4,16 +4,26 @@ export function fenceMermaid(mermaid: string) {
     return `\`\`\`mermaid\n${mermaid}\n\`\`\``;
 }
 
-export function formatOutput(file: string, results: DiagramTypedResult[]) {
-    const resultLines = results.map((result) => {
-        return `## ${result.diagramType}\n${fenceMermaid(result.diagram)}\n\n`;
-    }).join("\n");
-    return [
-        file,
-        '',
-        '',
-        `## ${results[0].description}`,
-        '',
-        ...resultLines,
-    ].join("\n");
+function capitalize(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function formatOutput(file: string, results: DiagramTypedResult[], verbose: boolean) {
+    if (verbose) {
+        console.log(`Formatting output for ${file}`);
+    }
+
+    const output: string[] = [
+        `# ${file} Diagram${results.length > 1 ? 's' : ''}`,
+        ''
+    ];
+    if (results.length > 0) {
+        output.push(`## ${results[0].description}\n`);
+    }
+    for (const result of results) {
+        output.push(`## ${capitalize(result.diagramType)} Diagram\n`);
+        output.push(fenceMermaid(result.diagram));
+        output.push(`\n`);
+    }
+    return output.join("\n");
 }

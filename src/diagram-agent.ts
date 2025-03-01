@@ -83,7 +83,7 @@ async function callOllama(model: string, prompt: string): Promise<DiagramResult>
  * @param instructions - The prompt instructions
  * @returns A DiagramResult object containing the mermaid diagram and description
  */
-export async function diagramMaker(modelSpec: Model, instructions: string): Promise<DiagramResult> {
+export async function diagramMaker(modelSpec: Model, instructions: string, verbose: boolean): Promise<DiagramResult> {
   const prompt = `
     ${instructions}
     
@@ -92,12 +92,22 @@ export async function diagramMaker(modelSpec: Model, instructions: string): Prom
     - The description should be a short description of the diagram.
   `;
 
+  if (verbose) {
+    console.log(`DiagramMaker prompt:\n${prompt}`);
+  }
+
   const { provider, providerType, modelName } = modelSpec;
 
   // Call the appropriate API based on the provider
   if (providerType === "ollama") {
+    if (verbose) {
+      console.log(`Calling Ollama ${modelName}`);
+    }
     return callOllama(modelName, prompt);
   } else if (providerType === "openai") {
+    if (verbose) {
+      console.log(`Calling OpenAI ${modelName}`);
+    }
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey && provider === "https://api.openai.com/v1/chat/completions") {
       throw new Error("OPENAI_API_KEY environment variable is required for OpenAI API");
