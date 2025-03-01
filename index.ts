@@ -5,7 +5,18 @@ import { diagramMaker } from './src/diagram-agent.ts';
 import { makeCodePrompt } from './src/prompts.ts';
 import { formatOutput } from './src/formatters.ts';
 import { determineModel } from './src/model-parser.ts';
+import type { DiagramTypedResult, Model } from './types/types.d.ts';
+
 const program = new Command();
+
+async function generateDiagram(model: Model, diagramType: string, fileExtension: string, content: string) {
+  const prompt = makeCodePrompt(content, fileExtension, diagramType);
+  return diagramMaker(model, prompt);
+}
+
+interface DiagramResult {
+  diagrams: string[];
+}
 
 program
   .name('mermaid-this')
@@ -13,7 +24,7 @@ program
   .version('0.1.1')
   .argument('<file>', 'The file to generate a mermaid diagram for')
   .option('-o, --output <file>', 'Output file (defaults to stdout)')
-  .option('-t, --type <type>', 'Type of diagram to generate (defaults to "sequence")')
+  .option('-t, --type <type>', 'Type of diagram to generate (defaults to "sequence"), separate multiple types with commas')
   .option('-m, --model <model>', 'Model to use (defaults to "ollama:llama3.1:8b"). Use "openai:<model>" for OpenAI API, use "http://host:port/path" for local OpenAI-compatible API')
   .action(async (file, options) => {
     try {
@@ -30,13 +41,17 @@ program
 
       const diagramType = options.type || 'sequence';
       const model = determineModel(options.model || 'ollama:llama3.1:8b');
-      const prompt = makeCodePrompt(content, fileExtension, diagramType);
-      // Generate the mermaid diagram
-      const result = await diagramMaker(model, prompt);
+      const diagramTypes = diagramType.split(',');
+      const diagrams: DiagramTypedResult[] = await Promise.all(diagramTypes.map(async (diagramType: string) => {
+        const { description, diagram } = await generateDiagram(model, diagramType, fileExtension, content);
+        return {
+          description,
+          diagram,
+          diagramType,
+        };
+      }));
 
-      const { mermaid, description } = result;
-
-      const output = formatOutput(file, diagramType, description, mermaid);
+      const output = formatOutput(file, diagrams);
 
       if (options.output) {
         const outFile = Bun.file(options.output);

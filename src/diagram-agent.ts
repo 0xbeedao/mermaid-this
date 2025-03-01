@@ -79,10 +79,7 @@ async function callOllama(model: string, prompt: string): Promise<DiagramResult>
 /**
  * Generate a mermaid diagram using the specified model
  * 
- * @param modelSpec - Model specification in format:
- *   - "ollama:modelName" for Ollama models (e.g., "ollama:llama3.1:8b")
- *   - "openai:modelName" for OpenAI API (e.g., "openai:gpt-4o-mini")
- *   - "local:modelName" for local OpenAI-compatible API (e.g., "local:mistral-7b")
+ * @param modelSpec - Model specification
  * @param instructions - The prompt instructions
  * @returns A DiagramResult object containing the mermaid diagram and description
  */
@@ -90,8 +87,8 @@ export async function diagramMaker(modelSpec: Model, instructions: string): Prom
   const prompt = `
     ${instructions}
     
-    - Output in the following json format: { mermaid: string, description: string }
-    - The mermaid string should be a valid mermaid diagram.
+    - Output in the following json format: { diagram: string, description: string }
+    - The diagram string should be a valid mermaid diagram.
     - The description should be a short description of the diagram.
   `;
 

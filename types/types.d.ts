@@ -8,3 +8,7 @@ export interface Model {
 }
 
 export type DiagramResult = z.infer<typeof DiagramResultSchema>;
+
+export interface DiagramTypedResult extends DiagramResult {
+    diagramType: string;
+}
