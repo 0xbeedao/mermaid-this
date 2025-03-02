@@ -18,7 +18,7 @@ export function formatOutput(file: string, results: DiagramTypedResult[], verbos
         ''
     ];
     if (results.length > 0) {
-        output.push(`## ${results[0].description}\n`);
+        output.push(`## ${results[0]?.description}\n`);
     }
     for (const result of results) {
         output.push(`## ${capitalize(result.diagramType)} Diagram\n`);

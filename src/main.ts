@@ -5,7 +5,6 @@ import { formatOutput } from './formatters.ts';
 import { determineModel } from './model-parser.ts';
 import type { DiagramTypedResult, Model } from '../types/types.d.ts';
 
-export const DEFAULT_MODEL = 'openai:gpt-4o-mini';
 export const DEFAULT_DIAGRAM_TYPES = ['sequence'];
 
 async function generateDiagram(model: Model, diagramType: string, fileExtension: string, content: string, verbose: boolean) {
@@ -27,7 +26,7 @@ export async function main(file: string, outputOption: string, modelOption: stri
   const content = await inFile.text();
   const fileExtension = path.extname(file).slice(1);
 
-  const model = determineModel(modelOption || DEFAULT_MODEL);
+  const model = determineModel(modelOption);
   const diagramTypes = diagramTypesOption ? diagramTypesOption.split(',') : DEFAULT_DIAGRAM_TYPES;
   if (verbose) {
     console.log(`Generating diagrams using ${model.modelName} for ${diagramTypes.length} types`);

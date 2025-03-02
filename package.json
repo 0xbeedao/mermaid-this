@@ -18,6 +18,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@mobily/ts-belt": "^3.13.1",
     "commander": "^13.1.0",
     "ollama": "^0.5.14",
     "zod": "^3.24.2"
