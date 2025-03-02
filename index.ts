@@ -1,14 +1,14 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import { main } from './src/main';
-import path from 'path';
+import { version } from './package.json';
 
 const program = new Command();
 
 program
   .name('mermaid-this')
   .description('CLI tool to generate mermaid diagrams for code files')
-  .version('0.1.1')
+  .version(version)
   .argument('<file>', 'The file to generate a mermaid diagram for')
   .option('-o, --output <file>', 'Output file (defaults to stdout)')
   .option('-t, --type <type>', 'Type of diagram to generate (defaults to "sequence"), separate multiple types with commas')

@@ -38,6 +38,9 @@ mermaid-this path/to/file.js > diagram.md
 # Specify the output file
 mermaid-this path/to/file.js -o diagram.md
 
+# auto-name the output file - this example writes "somefile.md"
+mermaid-this somefile.java --auto
+
 # Specify the diagram type
 mermaid-this path/to/file.js -t class
 

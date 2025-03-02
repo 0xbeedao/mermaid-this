@@ -1,6 +1,7 @@
 {
   "name": "mermaid-this",
   "module": "index.ts",
+  "version": "1.2.0",
   "type": "module",
   "private": true,
   "bin": {
